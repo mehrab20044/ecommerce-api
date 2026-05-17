@@ -1,0 +1,10 @@
+#development module 
+Django
+djangorestframework
+djangorestframework-simplejwt
+django-filter
+Pillow
+
+#clean data
+black
+flake8

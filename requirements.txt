@@ -4,7 +4,13 @@ djangorestframework
 djangorestframework-simplejwt
 django-filter
 Pillow
+markdown
+django-filter
+drf-yasg[validation]
 
 #clean data
 black
 flake8
+
+#make product random
+faker

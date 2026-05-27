@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Category, Product, ProductImage
 
 
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
@@ -23,10 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
         "category",
         "price",
         "stock",
-        "is_active",
+        "status",
         "created_date",
     ]
-    list_filter = ["category", "is_active", "created_date"]
+    list_filter = ["category", "status", "created_date"]
     search_fields = ["title", "description"]
     prepopulated_fields = {
         "slug": ["title"]
@@ -36,5 +37,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ["id", "product", "is_main"]
+    list_display = ["id", "product"]
+
+
+
 

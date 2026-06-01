@@ -19,31 +19,31 @@ class OrderViewset(viewsets.ReadOnlyModelViewSet):
             .prefetch_related("items__product")
             .order_by("-created_date")
             )
-    @action(detail=False,methods=["post"],url_path="checkout")
-    def checkout(self,request):
+    @action(detail=False, methods=["post"], url_path="checkout")
+    def checkout(self, request):
         serializer = CheckoutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        cart=(
-            CartModel.objects.filter(user=request.user)
-            .prefetch_related("cart_item__product")
+        cart = (
+            CartModel.objects
+            .filter(user=request.user)
+            .prefetch_related("cart_items__product")
             .first()
         )
 
         if not cart:
             return Response(
-                {"detail":"cart not found"},
+                {"detail": "Cart not found"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
-        cart_items = cart.cart_item.all()
 
-        if not cart_item:
+        cart_items = cart.cart_items.all()
+
+        if not cart_items.exists():
             return Response(
-                {"detail":"Your cart ids empty"},
+                {"detail": "Your cart is empty"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
 
         with transaction.atomic():
             order = OrderModel.objects.create(
@@ -56,27 +56,27 @@ class OrderViewset(viewsets.ReadOnlyModelViewSet):
             )
 
             order_items = []
-            for cart_item in cart_item:
+            for cart_item in cart_items:
                 product = cart_item.product
-                
+
                 order_items.append(
-                  OrderItemModel(
-                    order=order,
-                    product=product,
-                    product_title=product.title,
-                    product_price=product.price,
-                    quantity=cart_item.quantity,
-                  )  
+                    OrderItemModel(
+                        order=order,
+                        product=product,
+                        product_title=product.title,
+                        product_price=product.price,
+                        quantity=cart_item.quantity,
+                    )
                 )
+
             OrderItemModel.objects.bulk_create(order_items)
-            
             cart_items.delete()
 
-            output_serializer = OrderSerializers(
+        output_serializer = OrderSerializers(
             order,
             context={"request": request}
         )
-        
+
         return Response(
             output_serializer.data,
             status=status.HTTP_201_CREATED

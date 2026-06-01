@@ -31,8 +31,8 @@ class OrderModel(models.Model):
     @property
     def total_price(self):
         return sum(
-            item.total_item_price for item in self.item.all()
-        ) or Decimal("0.00")
+            item.total_item_price for item in self.items.all()  # ✅
+        )
     
     @property
     def total_quantity(self):

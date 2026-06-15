@@ -10,10 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: .
-
     services:
       postgres_db:
         image: postgres:latest
@@ -41,9 +37,13 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # بررسی وجود فایل نیازمندی‌ها در پوشه اصلی یا فرعی و نصب آن
+        if [ -f core/requirements.txt ]; then pip install -r core/requirements.txt; elif [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run Django Tests
+      # 💥 راه‌حل نهایی و بی‌دردسر:
+      # با این خط، گیت‌هاب را مجبور می‌کنیم که برای این دستور وارد پوشه core بشود
+      working-directory: ./core
       env:
         DJANGO_SETTINGS_MODULE: core.settings
         DB_HOST: localhost
@@ -51,6 +51,6 @@ jobs:
         DB_USER: mehrab_1383
         DB_PASSWORD: mehrab_2004
         DB_NAME: mehrab
-      # 💥 اصلاح دستور: اول متغیر محیطی ست می‌شود، بعد پایتون اجرا می‌شود
+      # حالا پایتون بدون هیچ گیج شدنی، مستقیم مدیریت پروژه را دستش می‌گیرد
       run: |
-        PYTHONPATH=$PYTHONPATH:$(pwd) python manage.py test
+        python manage.py test

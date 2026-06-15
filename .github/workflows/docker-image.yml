@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Django Ecommerce CI
 
 on:
   push:
@@ -41,6 +41,8 @@ jobs:
 
     - name: Run Django Tests
       env:
+        # 💥 حل مشکل: معرفی تنظیمات جنگو به گیت‌هاب اکشنز
+        DJANGO_SETTINGS_MODULE: core.settings
         DB_HOST: localhost
         DB_PORT: 5432
         DB_USER: mehrab_1383

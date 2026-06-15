@@ -7,10 +7,13 @@ Pillow
 markdown
 django-filter
 drf-yasg[validation]
+pytest
+pytest-django
 
 #clean data
 black
 flake8
 
 #make product random
-faker
+faker#database
+psycopg2-binary

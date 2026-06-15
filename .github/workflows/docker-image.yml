@@ -10,6 +10,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # 💥 حل مشکل: defaults باید دقیقاً در این لول (زیرمجموعه مستقیم جابِ test) تعریف شود
+    defaults:
+      run:
+        working-directory: .
+
     services:
       postgres_db:
         image: postgres:latest
@@ -37,12 +42,9 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f core/requirements.txt ]; then pip install -r core/requirements.txt; elif [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run Django Tests
-      defaults:
-        run:
-          working-directory: ./core
       env:
         DJANGO_SETTINGS_MODULE: core.settings
         DB_HOST: localhost
@@ -51,4 +53,4 @@ jobs:
         DB_PASSWORD: mehrab_2004
         DB_NAME: mehrab
       run: |
-        python manage.py test
+        python -m PYTHONPATH=$PYTHONPATH:$(pwd) python manage.py test

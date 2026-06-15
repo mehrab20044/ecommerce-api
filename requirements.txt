@@ -15,5 +15,10 @@ black
 flake8
 
 #make product random
-faker#database
+faker
+
+#database
 psycopg2-binary
+
+#deploy
+gunicorn

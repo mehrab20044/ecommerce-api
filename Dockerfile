@@ -7,9 +7,11 @@ WORKDIR /app
 
 COPY requirements.txt /app/
 
-RUN pip3 install --upgrade pip -i https://mirror2.chabokan.net/pypi/simple
-RUN pip3 install -r requirements.txt -i https://mirror2.chabokan.net/pypi/simple
+RUN pip3 install --upgrade pip 
+RUN pip3 install -r requirements.txt 
 
 COPY ./core /app
 
-CMD [ "python3","manage.py","runserver","0.0.0.0:8000" ]
+RUN python3 manage.py collectstatic --noinput
+
+CMD ["gunicorn","core.wsgi:application","--bind","0.0.0.0:8000","--workers","3"]

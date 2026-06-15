@@ -37,11 +37,13 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f core/requirements.txt ]; then pip install -r core/requirements.txt; elif [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run Django Tests
+      defaults:
+        run:
+          working-directory: ./core
       env:
-        # 💥 حل مشکل: معرفی تنظیمات جنگو به گیت‌هاب اکشنز
         DJANGO_SETTINGS_MODULE: core.settings
         DB_HOST: localhost
         DB_PORT: 5432

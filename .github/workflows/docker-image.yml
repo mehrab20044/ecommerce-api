@@ -10,7 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # 💥 حل مشکل: defaults باید دقیقاً در این لول (زیرمجموعه مستقیم جابِ test) تعریف شود
     defaults:
       run:
         working-directory: .
@@ -52,5 +51,6 @@ jobs:
         DB_USER: mehrab_1383
         DB_PASSWORD: mehrab_2004
         DB_NAME: mehrab
+      # 💥 اصلاح دستور: اول متغیر محیطی ست می‌شود، بعد پایتون اجرا می‌شود
       run: |
-        python -m PYTHONPATH=$PYTHONPATH:$(pwd) python manage.py test
+        PYTHONPATH=$PYTHONPATH:$(pwd) python manage.py test

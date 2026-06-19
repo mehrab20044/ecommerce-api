@@ -9,6 +9,10 @@ django-filter
 drf-yasg[validation]
 pytest
 pytest-django
+requests
+redis
+celery
+
 
 #clean data
 black

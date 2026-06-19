@@ -9,7 +9,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=supersecretpassword
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - shop_network
 
   backend:
     build: .
@@ -20,6 +22,9 @@ services:
       - media_volume:/app/media
     depends_on:
       - db
+      - redis
+    networks:
+      - shop_network
 
   nginx:
     image: nginx:stable-alpine
@@ -32,6 +37,19 @@ services:
       - media_volume:/app/media:ro
     depends_on:
       - backend
+    networks:
+      - shop_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    networks:
+      - shop_network
+      
+networks:
+  shop_network:
+    driver: bridge
 
 volumes:
   postgres_data:

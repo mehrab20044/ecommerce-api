@@ -75,3 +75,14 @@ class ActivationResendSerializer(serializers.Serializer):
 
         attrs["user"] = user_obj
         return super().validate(attrs)
+    
+class SendOTPSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=11,min_length=11)
+
+    def validate_phone_number(self, value):
+        if not value.isdigit() or not value.startswith('09'):
+            raise serializers.ValidationError("Invalid phone number format. It should be 11 digits and start with '09'.")
+        return value
+class VerifyOTPSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=11,min_length=11)
+    otp_code = serializers.CharField(max_length=6)

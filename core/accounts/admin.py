@@ -5,14 +5,14 @@ from .models import User,Profile
 
 class CustomAdminPanel(UserAdmin):
     model= User
-    list_display = ('email','is_superuser','is_active','is_verified')
-    list_filter =  ('email','is_superuser','is_active','is_verified')
-    search_fields = ('email',)
-    ordering = ('email',)
+    list_display = ('phone_number','is_superuser','is_active','is_verified')
+    list_filter =  ('phone_number','is_superuser','is_active','is_verified')
+    search_fields = ('phone_number',)
+    ordering = ('phone_number',)
     fieldsets = (
         ('Authentication',{
             'fields':(
-                'email','password'
+                'phone_number','password'
             ),
         }),
         ('permissions',{
@@ -35,7 +35,7 @@ class CustomAdminPanel(UserAdmin):
     add_fieldsets =(
         (None,{
             'classes':('wide',),
-            'fields':('email','password1','password2','is_staff','is_superuser','is_active')
+            'fields':('phone_number','email','password1','password2','is_staff','is_superuser','is_active')
         }),
     )
 

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:18
@@ -18,6 +16,7 @@ services:
     container_name: backend
     command: sh -c "python3 manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3"
     volumes:
+      - ./core:/app
       - static_volume:/app/static
       - media_volume:/app/media
     depends_on:

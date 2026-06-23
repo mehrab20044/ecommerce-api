@@ -6,11 +6,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from accounts.models import User,Profile 
 
 class RegistrationSerializers(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
     password1= serializers.CharField(write_only = True)
 
     class Meta:
         model=User
-        fields=['email','password','password1']
+        fields=['phone_number','email','password','password1']
 
     def validate(self, attrs):
         if attrs.get('password')!= attrs.get("password1"):

@@ -11,6 +11,7 @@ class PaymentStatus(models.TextChoices):
     SUCCESS = "success","Success"
     FAILED = "failed", "Failed"
 
+
 class PaymentModel(TimeStampMixin):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name="payments")
     order = models.OneToOneField(OrderModel,on_delete=models.CASCADE,related_name="payments")

@@ -159,3 +159,18 @@ EMAIL_HOST = 'smtp4dev'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
+
+
+# zarinpal settings
+SANDBOX = True
+ZARINPAL_MERCHANT_ID = '11111111-1111-1111-1111-111111111111'
+ZARINPAL_CALLBACK_URL = 'http://127.0.0.1/payment/api/v1/payments/verify/'
+
+if SANDBOX:
+    ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
+    ZP_API_VERIFICATION = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
+    ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/{authority}'
+else:
+    ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+    ZP_API_VERIFICATION = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+    ZP_API_STARTPAY = 'https://www.zarinpal.com/pg/StartPay/{authority}'

@@ -20,7 +20,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         except OrderModel.DoesNotExist:
             raise serializers.ValidationError("Order not found")
 
-        if order.status != OrderStatus.PENDING:
+        if order.status != OrderStatus.pending:
             raise serializers.ValidationError("Order cannot be paid")
 
         if order.total_price <= 0:
@@ -49,7 +49,5 @@ class PaymentSerializer(serializers.ModelSerializer):
                 order=order,
                 amount=order.total_price
             )
-            order.status = OrderStatus.PAYMENT_PENDING
-            order.save()
 
         return payment

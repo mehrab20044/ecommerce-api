@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from ...models import OrderModel,OrderItemModel
 from cart.models import CartModel
 
-from .serializers import OrderSerializers,CheckoutSerializer
+from .serializers import OrderSerializers,CheckoutSerializer,OrderHistorySerializer
 
 class OrderViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes=[permissions.IsAuthenticated]
@@ -81,3 +81,8 @@ class OrderViewset(viewsets.ReadOnlyModelViewSet):
             output_serializer.data,
             status=status.HTTP_201_CREATED
         )
+    @action(detail=False,methods=["get"],url_path="history",permission_classes=[permissions.IsAuthenticated])
+    def history(self, request):
+        orders = OrderModel.objects.filter(user=request.user).order_by("-created_date")
+        serializer = OrderHistorySerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

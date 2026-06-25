@@ -66,3 +66,26 @@ class CheckoutSerializer(serializers.Serializer):
         required=False,
         allow_blank=True
     )
+
+class OrderHistorySerializer(serializers.ModelSerializer):
+    item = OrderItemSerializers(many=True, read_only=True)
+
+
+    class Meta:
+        model = OrderModel
+        fields =[
+            
+            "id",
+            "status",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "address",
+            "postal_code",
+            "item",
+            "total_price",
+            "total_quantity",
+            "created_date",
+            "updated_date",
+        ]
+        
